@@ -69,31 +69,36 @@ def find_closest_question(query, faiss_index, df):
     return None
 
 # Function to generate refined answers using AI
-def generate_refined_answer(query, retrieved_answer):
+def generate_refined_answer(query, retrieved_answer, chat_history):
+    chat_context = "\n".join([f"User: {msg['content']}" for msg in chat_history if msg["role"] == "user"][-5:])  # Last 5 user inputs
     prompt = f"""
-    You are Preethi, a 3rd year BTech AIML student. Answer the question in a friendly, conversational tone:
-    Question: {query}
+    You are Preethi, a 3rd-year BTech AIML student. Answer in a friendly, conversational tone.
+    Previous Chat History:
+    {chat_context}
+    Current Question: {query}
     Retrieved Answer: {retrieved_answer}
-    - Keep it concise (2-3 lines).
-    - Correct grammar and make it engaging.
+    
+    - Ensure the answer is at least 3 lines long.
+    - Use correct grammar and make it engaging.
     """
     response = gemini.generate_content(prompt)
     return response.text if response else retrieved_answer
 
- #Function to calculate age dynamically
+# Function to calculate age dynamically
 def calculate_age(dob_str):
     try:
         dob = datetime.strptime(dob_str, "%d %B %Y")
         today = datetime.today()
         age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
-        return f"I am {age} years old."
+        return f"I am {age} years old. Time flies, right? Feels like I just started my journey!"
     except Exception:
-        return "I couldn't calculate my age."
+        return "I couldn't calculate my age, but I'm forever young at heart!"
 
-# Store conversation history
+# Store conversation history **without clearing after 5 prompts**
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
+# Display chat history
 for message in st.session_state.messages:
     with st.chat_message(message["role"], avatar="🙋" if message["role"] == "user" else "🤖"):
         st.markdown(message["content"])
@@ -109,7 +114,7 @@ if prompt := st.chat_input("Ask me anything..."):
                 response = "My name is Preethi, not Jyo."
             else:
                 retrieved_answer = find_closest_question(prompt, faiss_index, df)
-                response = generate_refined_answer(prompt, retrieved_answer) if retrieved_answer else "I don't know that yet."
+                response = generate_refined_answer(prompt, retrieved_answer, st.session_state.messages) if retrieved_answer else "I don't know that yet, but I'm learning!"
         except Exception as e:
             response = f"An error occurred: {e}"
     
