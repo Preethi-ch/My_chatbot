@@ -22,15 +22,15 @@ st.markdown("""
         border: 2px solid #2c5f2d !important;
     }
     .bot-msg {
-        background: #e6f7ff !important;  /* Soft blue background */
+        background: #fff9e6 !important;
         border-radius: 15px !important;
-        border: 2px solid #007acc !important;  /* Deep blue border */
-        color: #004080 !important;  /* Dark blue text */
+        border: 2px solid #ffd700 !important;
     }
     .stChatInput {
         background: #ffffff;
     }
 </style>
+
 
 """, unsafe_allow_html=True)
 
