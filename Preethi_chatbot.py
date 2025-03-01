@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import google.generativeai as genai
 from sentence_transformers import SentenceTransformer
 import faiss
 import numpy as np
@@ -34,13 +33,7 @@ st.markdown("""
         border: 2px solid #8bc34a !important;
     }
 </style>
-
-
-
 """, unsafe_allow_html=True)
-
-genai.configure(api_key="AIzaSyADZJ11fXuCbq6lLrTmu02zEcdx0DYja2Q")  
-gemini = genai.GenerativeModel('gemini-1.5-flash')
 
 embedder = SentenceTransformer('all-MiniLM-L6-v2') 
 
@@ -76,16 +69,6 @@ def find_closest_question(query, faiss_index, df):
         return df.iloc[I[0][0]]['answer']  # Return the closest answer
     return None
 
-def generate_refined_answer(query, retrieved_answer):
-    prompt = f"""You are Preethi, currently pursuing 3rd year BTech in AIML stream. Respond to the following question in a friendly and conversational tone:
-    Question: {query}
-    Retrieved Answer: {retrieved_answer}
-    - Provide a detailed and accurate response.
-    - Ensure the response is grammatically correct and engaging.
-    """
-    response = gemini.generate_content(prompt)
-    return response.text
-
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
@@ -102,9 +85,9 @@ if prompt := st.chat_input("Ask me anything..."):
             # Find the closest answer
             retrieved_answer = find_closest_question(prompt, faiss_index, df)
             if retrieved_answer:
-                # Generate a refined answer using Gemini
-                refined_answer = generate_refined_answer(prompt, retrieved_answer)
-                response = f"**Preethi**:\n{refined_answer}"
+                # Limit the response to 2-3 lines
+                short_answer = " ".join(retrieved_answer.split()[:30]) + "..."
+                response = f"**Preethi**:\n{short_answer}"
             else:
                 response = "**Preethi**:\nI'm sorry, I cannot answer that question."
         except Exception as e:
