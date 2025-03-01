@@ -80,7 +80,7 @@ def generate_refined_answer(query, retrieved_answer):
     response = gemini.generate_content(prompt)
     return response.text if response else retrieved_answer
 
- Function to calculate age dynamically
+ #Function to calculate age dynamically
 def calculate_age(dob_str):
     try:
         dob = datetime.strptime(dob_str, "%d %B %Y")
