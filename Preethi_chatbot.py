@@ -8,28 +8,33 @@ import numpy as np
 st.markdown("""
 <style>
     .stApp {
-        background: #f8f5e6;
-        background-image: radial-gradient(#d4d0c4 1px, transparent 1px);
+        background: #121212;  /* Dark background */
+        background-image: radial-gradient(#1e1e1e 1px, transparent 1px);
         background-size: 20px 20px;
     }
     .chat-font {
         font-family: 'Times New Roman', serif;
-        color: #2c5f2d;
+        color: #cddc39;  /* Soft lime green */
     }
     .user-msg {
-        background: #ffffff !important;
+        background: #1e1e1e !important;  /* Dark gray */
         border-radius: 15px !important;
-        border: 2px solid #2c5f2d !important;
+        border: 2px solid #8bc34a !important;  /* Green border */
+        color: #ffffff !important;
     }
     .bot-msg {
-        background: #fff9e6 !important;
+        background: #263238 !important;  /* Dark cyan-gray */
         border-radius: 15px !important;
-        border: 2px solid #ffd700 !important;
+        border: 2px solid #03a9f4 !important;  /* Neon blue border */
+        color: #81d4fa !important;  /* Light blue text */
     }
     .stChatInput {
-        background: #ffffff;
+        background: #1e1e1e;
+        color: #ffffff;
+        border: 2px solid #8bc34a !important;
     }
 </style>
+
 
 
 """, unsafe_allow_html=True)
